@@ -12,33 +12,14 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('config.globals')
-<<<<<<< HEAD
-require('config.options')
-require('config.keymaps')
-=======
 require ('config.options')
 require ('config.keymaps')
->>>>>>> 0d46229 (init commit & new color scheme)
 
 local opts = {
 	defaults = {
 		lazy = true,
 	},
 	install = {
-<<<<<<< HEAD
-		colorscheme = { "rose-pine"}
-	},
-	rtp = {
-		disabled_plugins = {
-        -- "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
-        -- "tarPlugin",
-        -- "tohtml",
-        -- "tutor",
-        -- "zipPlugin",
-=======
 		colorscheme = { "kanagawa"}
 	},
 	rtp = {
@@ -51,16 +32,11 @@ local opts = {
          "tohtml",
          "tutor",
          "zipPlugin",
->>>>>>> 0d46229 (init commit & new color scheme)
 		}
       },
       change_detection = {
 	      notify = true,
       },
-<<<<<<< HEAD
-
-=======
->>>>>>> 0d46229 (init commit & new color scheme)
 }
 
 require("lazy").setup('plugins', opts)

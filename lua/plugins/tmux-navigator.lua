@@ -1,8 +1,4 @@
 return {
-<<<<<<< HEAD
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
-=======
   "christoomey/vim-tmux-navigator",
   cmd = {
     "TmuxNavigateLeft",
@@ -18,5 +14,4 @@ return {
     { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
     { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
   },
->>>>>>> 0d46229 (init commit & new color scheme)
 }

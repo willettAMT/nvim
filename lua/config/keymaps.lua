@@ -12,14 +12,6 @@ keymap.set("v", "K", ":m '>-2<CR>gv=gv")
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
 
-<<<<<<< HEAD
--- Keep cursor in middle while searching terms
-keymap.set("n", "n", "nzzzv")
-keymap.set("n", "N", "Nzzzv")
-
--- deletes highlighted word into void register w/o losing highlighted copy (using TMUX)
-keymap.set("x", "<leader>p", "\"_dP")
-=======
 -- Keep cursor in middle of page when searching
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
@@ -34,7 +26,6 @@ keymap.set("v", "K", ":m '>-2<CR>gv=gv")
 -- Keep cursor in middle while searching terms
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
->>>>>>> 0d46229 (init commit & new color scheme)
 
 -- switch projects BLAZINGLY FAST
 keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tumux-sesssionizer<CR>")
