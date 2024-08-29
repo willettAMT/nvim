@@ -47,7 +47,11 @@ return {
                 mapping = cmp.mapping.preset.insert({
                     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+<<<<<<< HEAD
                     ['<C-y>'] = cmp.mapping.select_confirm({ select = true }),
+=======
+                    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+>>>>>>> 0d46229 (init commit & new color scheme)
                     ['<C-Space>'] = cmp.mapping.complete(),
                 }),
             })

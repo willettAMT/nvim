@@ -23,6 +23,10 @@ local config = function()
             "gitignore",
             "python",
             "c",
+<<<<<<< HEAD
+=======
+            "cpp",
+>>>>>>> 0d46229 (init commit & new color scheme)
             "zig",
             "sql",
             "ocaml",
