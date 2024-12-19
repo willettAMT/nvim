@@ -1,4 +1,4 @@
-local keymap = vim.keymap
+local km = vim.keymap
 
 local config = function()
     local telescope = require('telescope')
@@ -14,12 +14,12 @@ local config = function()
         pickers = {
             find_files = {
                 theme = "dropdown",
-                previewer = false,
+                previewer = true,
                 hidden = true,
             },
             live_grep = {
                 theme = "dropdown",
-                previewer = false,
+                previewer = true,
             }
         },
         extensions = {
@@ -49,15 +49,16 @@ local config = function()
 end
 
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.6',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.6',
     lazy = false,
-    dependencies = { 'nvim-lua/plenary.nvim', 'debugloop/telescope-undo.nvim'},
+    dependencies = { 'nvim-lua/plenary.nvim', 'debugloop/telescope-undo.nvim' },
     config = config,
     keys = {
-        keymap.set('n', "<leader>pp", ":Telescope <CR>"),
-        keymap.set('n', "<leader>pf", ":Telescope find_files<CR>"),
-        keymap.set('n', "<leader>pg", ":Telescope live_grep<CR>"),
-        keymap.set('n', "<leader>pb", ":Telescope buffers<CR>"),
-        keymap.set('n', "<C-p>", ":Telescope git_files<CR>"),
+        km.set('n', "<leader>pp", ":Telescope <CR>"),
+        km.set('n', "<leader>pf", ":Telescope find_files<CR>"),
+        km.set('n', "<leader>ps", ":Telescope live_grep<CR>"),
+        km.set('n', "<leader>pb", ":Telescope buffers<CR>"),
+        km.set('n', "<C-p>", ":Telescope git_files<CR>"),
     },
 }
