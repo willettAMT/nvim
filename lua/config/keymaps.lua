@@ -30,7 +30,7 @@ keymap.set("n", "N", "Nzzzv")
 -- switch projects BLAZINGLY FAST
 keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tumux-sesssionizer<CR>")
 keymap.set("n", "<leader>f", function()
-  vim.lsp.buf.format()
+    vim.lsp.buf.format()
 end)
 
 -- Indentation navigation
