@@ -11,7 +11,7 @@ return {
     keys = {
         -- add buffer && toggle menu
         keymap.set("n", "<leader>a", function() require("harpoon"):list():add() end),
-        keymap.set("n", "<C-e>", function() local harpoon = require("harpoon") harpoon.ui:toggle_quick_menu(harpoon:list()) end),
+        keymap.set("n", "<leader>e", function() local harpoon = require("harpoon") harpoon.ui:toggle_quick_menu(harpoon:list()) end),
         -- select buffer
         keymap.set("n", "<C-i>", function() require("harpoon"):list():select(1) end),
         keymap.set("n", "<C-j>", function() require("harpoon"):list():select(2) end),
