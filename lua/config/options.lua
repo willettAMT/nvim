@@ -21,6 +21,7 @@ opt.relativenumber = true
 opt.signcolumn = "yes"
 opt.cmdheight = 1
 opt.colorcolumn = "80"
+opt.cursorline = true
 
 -- Behavior
 opt.hidden = true
