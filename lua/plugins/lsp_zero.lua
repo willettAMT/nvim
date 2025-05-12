@@ -14,6 +14,7 @@ return {
     'williamboman/mason.nvim',
     lazy = false,
     config = true,
+    version = '^1.9'
   },
 
   -- Autocompletion
