@@ -21,7 +21,24 @@ return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            'saghen/blink.cmp',
+            {
+                'saghen/blink.cmp',
+                -- optional blink completion source for require statements and module annotations
+                opts = {
+                    sources = {
+                        -- add lazydev to your completion providers
+                        default = { "lazydev", "lsp", "path", "buffer" },
+                        providers = {
+                            lazydev = {
+                                name = "LazyDev",
+                                module = "lazydev.integrations.blink",
+                                -- make lazydev completions top priority (see `:h blink.cmp`)
+                                score_offset = 100,
+                            },
+                        },
+                    },
+                },
+            },
             {
                 "folke/lazydev.nvim",
                 ft = "lua", -- only load on lua files
