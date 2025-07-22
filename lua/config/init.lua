@@ -21,7 +21,6 @@ local opts = {
     },
     install = {
         colorscheme = { "kanagawa" },
-        
     },
     rtp = {
         disabled_plugins = {
