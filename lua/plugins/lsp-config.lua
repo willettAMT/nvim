@@ -77,7 +77,6 @@ return {
                 vim.keymap.set('n', '<leader>gi', goto_implementation_new_tab, opts) -- Implementation in new tab
                 vim.keymap.set('n', '<leader>gt', goto_type_definition_new_tab, opts) -- Type def in new tab
                 vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, opts) -- References (moved to leader)                -- IntelliJ-style shortcuts
-                vim.keymap.set('n', '<C-b>', vim.lsp.buf.definition, opts) -- Ctrl+B like IntelliJ
                 vim.keymap.set('n', '<leader>fu', vim.lsp.buf.references, opts) -- Find usages (changed from C-u)
                 -- Refactoring (IntelliJ-like)
                 vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts) -- F2 for rename (IntelliJ default)

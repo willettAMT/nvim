@@ -27,10 +27,6 @@ keymap("v", "K", ":m '>-2<CR>gv=gv")
 keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
 
--- Goto Def
-keymap('n', 'gd', vim.lsp.buf.definition, {buffer = 0})
-keymap('n', 'gD', vim.lsp.buf.declaration, {buffer = 0})
-
 -- switch projects BLAZINGLY FAST
 keymap("n", "<C-f>", "<cmd>silent !tmux neww tumux-sesssionizer<CR>")
 keymap("n", "<leader>f", function()
