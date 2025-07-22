@@ -23,16 +23,13 @@ return {
         dependencies = {
             {
                 'saghen/blink.cmp',
-                -- optional blink completion source for require statements and module annotations
                 opts = {
                     sources = {
-                        -- add lazydev to your completion providers
                         default = { "lazydev", "lsp", "path", "buffer" },
                         providers = {
                             lazydev = {
                                 name = "LazyDev",
                                 module = "lazydev.integrations.blink",
-                                -- make lazydev completions top priority (see `:h blink.cmp`)
                                 score_offset = 100,
                             },
                         },
@@ -41,11 +38,9 @@ return {
             },
             {
                 "folke/lazydev.nvim",
-                ft = "lua", -- only load on lua files
+                ft = "lua",
                 opts = {
                     library = {
-                        -- See the configuration section for more details
-                        -- Load luvit types when the `vim.uv` word is found
                         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                     },
                 },
@@ -55,10 +50,10 @@ return {
         config = function()
             local capabilities = require('blink.cmp').get_lsp_capabilities()
             local lspconfig = require("lspconfig")
-            -- Enhanced on_attach function with IntelliJ-like keymaps
+            -- Vim-friendly on_attach function
             local function on_attach(client, bufnr)
                 local opts = { buffer = bufnr, silent = true }
-                 -- Custom function to open definition in new tab
+                -- Custom function to open definition in new tab
                 local function goto_definition_new_tab()
                     vim.cmd('tabnew')
                     vim.lsp.buf.definition()
@@ -70,46 +65,48 @@ return {
                 local function goto_type_definition_new_tab()
                     vim.cmd('tabnew')
                     vim.lsp.buf.type_definition()
-                end-- Navigation (IntelliJ-like)
-               -- SAFE Navigation (preserving Vim defaults where important)
+                end
+                -- SAFE Navigation (preserving Vim defaults where important)
                 vim.keymap.set('n', 'gd', goto_definition_new_tab, opts) -- Go to definition in new tab
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts) -- Go to declaration (same buffer)
                 vim.keymap.set('n', '<leader>gi', goto_implementation_new_tab, opts) -- Implementation in new tab
                 vim.keymap.set('n', '<leader>gt', goto_type_definition_new_tab, opts) -- Type def in new tab
-                vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, opts) -- References (moved to leader)                -- IntelliJ-style shortcuts
-                vim.keymap.set('n', '<leader>fu', vim.lsp.buf.references, opts) -- Find usages (changed from C-u)
-                -- Refactoring (IntelliJ-like)
-                vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts) -- F2 for rename (IntelliJ default)
+                vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, opts) -- References (moved to leader)
+                -- Alternative navigation (same buffer versions)
+                vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts) -- Definition in same buffer
+                vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts) -- Declaration in same buffer
+                vim.keymap.set('n', '<leader>fu', vim.lsp.buf.references, opts) -- Find usages
+                -- Refactoring (safe keymaps)
+                vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts) -- F2 for rename (IntelliJ-like)
                 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts) -- Alternative rename
                 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts) -- Code actions
                 vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, opts) -- Code actions in visual mode
-                -- Quick fixes and formatting
+                -- Formatting
                 vim.keymap.set('n', '<leader>f', function()
                     vim.lsp.buf.format({ async = true })
                 end, opts)
-                -- Documentation and diagnostics
+                -- Documentation (K is reasonable to override for LSP)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- Hover documentation
-                vim.keymap.set('n', '<leader>sh', vim.lsp.buf.signature_help, opts) -- Signature help (changed from C-k)
-                vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts) -- Signature help in insert mode (changed from C-k)
-                -- Diagnostics navigation
-                vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, opts) -- Show diagnostic popup (changed from leader+e)
+                vim.keymap.set('n', '<leader>K', vim.lsp.buf.signature_help, opts) -- Signature help
+                vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, opts) -- Signature help in insert mode
+                -- Diagnostics navigation (safe keymaps)
+                vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, opts) -- Show diagnostic popup (avoiding harpoon conflict)
                 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts) -- Add diagnostics to location list
-                -- Workspace management
+                -- Workspace management (safe keymaps)
                 vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
                 vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
                 vim.keymap.set('n', '<leader>wl', function()
                     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                 end, opts)
-                -- Advanced telescope integrations (if you have telescope)
+                -- Telescope integrations (safe keymaps)
                 local telescope_available, telescope_builtin = pcall(require, 'telescope.builtin')
                 if telescope_available then
-                    -- Better LSP pickers with telescope
                     vim.keymap.set('n', '<leader>lr', telescope_builtin.lsp_references, opts) -- References in telescope
                     vim.keymap.set('n', '<leader>ls', telescope_builtin.lsp_document_symbols, opts) -- Document symbols
                     vim.keymap.set('n', '<leader>lS', telescope_builtin.lsp_workspace_symbols, opts) -- Workspace symbols
                     vim.keymap.set('n', '<leader>ld', telescope_builtin.diagnostics, opts) -- All diagnostics
                 end
-                -- Highlight symbol under cursor (IntelliJ-like)
+                -- Highlight symbol under cursor (non-conflicting)
                 if client.server_capabilities.documentHighlightProvider then
                     local group = vim.api.nvim_create_augroup("LSPDocumentHighlight", { clear = true })
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -123,17 +120,8 @@ return {
                         callback = vim.lsp.buf.clear_references,
                     })
                 end
-                -- Show function signature while typing
-                if client.server_capabilities.signatureHelpProvider then
-                    require('lsp_signature').on_attach({
-                        bind = true,
-                        handler_opts = {
-                            border = "rounded"
-                        }
-                    }, bufnr)
-                end
             end
-            -- Enhanced server configurations
+            -- Enhanced server configurations (same as before)
             local servers = {
                 lua_ls = {
                     capabilities = capabilities,
@@ -244,29 +232,30 @@ return {
             for server, config in pairs(servers) do
                 lspconfig[server].setup(config)
             end
-            -- Configure diagnostics appearance
+            -- Configure diagnostics appearance (modern method for 0.11.3+)
             vim.diagnostic.config({
                 virtual_text = {
                     prefix = '●',
-                    source = 'if_many',
+                    source = 'if_many', -- boolean or 'if_many' only
                 },
                 float = {
-                    source = true,
+                    source = 'if_many', -- boolean or 'if_many' only (not 'always')
                     border = 'rounded',
                 },
-                signs = true,
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = "󰅚",
+                        [vim.diagnostic.severity.WARN] = "󰀪",
+                        [vim.diagnostic.severity.HINT] = "󰌶",
+                        [vim.diagnostic.severity.INFO] = "",
+                    },
+                },
                 underline = true,
                 update_in_insert = false,
                 severity_sort = true,
             })
             -- Configure LSP UI
             require('lspconfig.ui.windows').default_options.border = 'rounded'
-            -- Diagnostic signs
-            local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
-            for type, icon in pairs(signs) do
-                local hl = "DiagnosticSign" .. type
-                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-            end
         end
     },
     -- Optional: Enhanced signature help

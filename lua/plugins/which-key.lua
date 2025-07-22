@@ -1,202 +1,172 @@
+
 return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
+        preset = "classic", -- "classic" | "modern" | "helix"
+        -- Delay before showing the popup
+        delay = function(ctx)
+            return ctx.plugin and 0 or 200
+        end,
+        -- Filter mappings (you can customize this)
+        filter = function(mapping)
+            return true -- show all mappings
+        end,
+        -- Spec for your key mappings (replaces the old register method)
+        spec = {
+            -- Project/Files group
+            { "<leader>p", group = "project/find" },
+            { "<leader>pf", desc = "Find files" },
+            { "<leader>ps", desc = "Live grep" },
+            { "<leader>pb", desc = "Find buffers" },
+            { "<leader>pp", desc = "Telescope" },
+            { "<leader>pv", desc = "File explorer (netrw)" },
+            -- LSP group
+            { "<leader>g", group = "goto" },
+            { "<leader>gd", desc = "Go to definition (same buffer)" },
+            { "<leader>gD", desc = "Go to declaration (same buffer)" },
+            { "<leader>gi", desc = "Go to implementation (new tab)" },
+            { "<leader>gt", desc = "Go to type definition (new tab)" },
+            { "<leader>gr", desc = "Find references" },
+            { "<leader>fu", desc = "Find usages" },
+            { "<leader>l", group = "lsp" },
+            { "<leader>lr", desc = "References (telescope)" },
+            { "<leader>ls", desc = "Document symbols" },
+            { "<leader>lS", desc = "Workspace symbols" },
+            { "<leader>ld", desc = "Diagnostics" },
+            { "<leader>r", group = "refactor" },
+            { "<leader>rn", desc = "Rename symbol" },
+            { "<leader>c", group = "code" },
+            { "<leader>ca", desc = "Code actions" },
+            { "<leader>cc", desc = "Copy line to clipboard" },
+            -- Diagnostics/Debug group
+            { "<leader>d", group = "diagnostics/debug" },
+            { "<leader>de", desc = "Show diagnostic popup" },
+            { "<leader>db", desc = "Debug: Toggle breakpoint" },
+            { "<leader>dl", desc = "Debug: Step into" },
+            { "<leader>dj", desc = "Debug: Step over" },
+            { "<leader>dk", desc = "Debug: Step out" },
+            { "<leader>dc", desc = "Debug: Continue" },
+            { "<leader>dd", desc = "Debug: Conditional breakpoint" },
+            { "<leader>dx", desc = "Debug: Terminate" },
+            { "<leader>dr", desc = "Debug: Run last" },
+            { "<leader>dt", desc = "Debug: Run testables" },
+            -- Harpoon group
+            { "<leader>a", desc = "Harpoon: Add file", icon = "♥" },
+            { "<leader>e", desc = "Harpoon: Toggle menu", icon = "♥" },
+            { "<leader>1", desc = "Harpoon: Select 1", icon = "1" },
+            { "<leader>2", desc = "Harpoon: Select 2", icon = "2" },
+            { "<leader>3", desc = "Harpoon: Select 3", icon = "3" },
+            { "<leader>4", desc = "Harpoon: Select 4", icon = "4" },
+            -- Workspace group
+            { "<leader>w", group = "workspace" },
+            { "<leader>wa", desc = "Add workspace folder" },
+            { "<leader>wr", desc = "Remove workspace folder" },
+            { "<leader>wl", desc = "List workspace folders" },
+            -- Quickfix/Location
+            { "<leader>q", desc = "Open diagnostics in location list" },
+            { "<leader>k", desc = "Next location list" },
+            { "<leader>j", desc = "Previous location list" },
+            -- Utilities
+            { "<leader>u", desc = "Toggle undotree" },
+            { "<leader>mx", desc = "Make file executable" },
+            { "<leader>f", desc = "Format buffer" },
+            { "<leader>sh", desc = "Signature help" },
+            -- Top-level single keys
+            { "gd", desc = "Go to definition (new tab)" },
+            { "gD", desc = "Go to declaration" },
+            { "K", desc = "Hover documentation" },
+            { "<F2>", desc = "Rename symbol" },
+            { "<C-p>", desc = "Git files" },
+            { "<C-f>", desc = "Tmux session switcher" },
+            { "<C-k>", desc = "Next quickfix item" },
+            { "<C-j>", desc = "Previous quickfix item" },
+            -- Diagnostics navigation
+            { "]d", desc = "Next diagnostic" },
+            { "[d", desc = "Previous diagnostic" },
+            -- Visual mode mappings
+            { "<leader>c", desc = "Copy to clipboard", mode = "v" },
+            { "<leader>ca", desc = "Code actions", mode = "v" },
+            { "J", desc = "Move line down", mode = "v" },
+            { "K", desc = "Move line up", mode = "v" },
+            { "<", desc = "Indent left", mode = "v" },
+            { ">", desc = "Indent right", mode = "v" },
+        },
+        -- Show a warning when issues were detected with your mappings
+        notify = true,
+        -- Triggers for showing the popup
+        triggers = {
+            { "<auto>", mode = "nxso" },
+        },
+        -- Plugin configuration
         plugins = {
-            marks = true, -- shows a list of your marks on ' and `
-            registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+            marks = true, -- shows marks on ' and `
+            registers = true, -- shows registers on " in normal mode
             spelling = {
-                enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-                suggestions = 20, -- how many suggestions should be shown in the list?
+                enabled = true, -- z= for spelling suggestions
+                suggestions = 20,
             },
-            -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-            -- No actual key bindings are created
             presets = {
-                operators = true, -- adds help for operators like d, y, ...
-                motions = true, -- adds help for motions
-                text_objects = true, -- help for text objects triggered after entering an operator
-                windows = true, -- default bindings on <c-w>
-                nav = true, -- misc bindings to work with windows
-                z = true, -- bindings for folds, spelling and others prefixed with z
-                g = true, -- bindings for prefixed with g
+                operators = true, -- help for d, y, etc.
+                motions = true, -- help for motions
+                text_objects = true, -- help for text objects
+                windows = true, -- help for <c-w>
+                nav = true, -- misc bindings for windows
+                z = true, -- bindings for folds, spelling
+                g = true, -- bindings for g prefix
             },
         },
-        -- add operators that will trigger motion and text object completion
-        -- to enable all native operators, set the preset / operators plugin above
-        operators = { gc = "Comments" },
-        key_labels = {
-            -- override the label used to display some keys. It doesn't effect WK in any other way.
-            ["<space>"] = "SPC",
-            ["<cr>"] = "RET",
-            ["<tab>"] = "TAB",
+        -- Window configuration
+        win = {
+            border = "rounded",
+            padding = { 1, 2 },
+            title = true,
+            title_pos = "center",
+            zindex = 1000,
         },
-        motions = {
-            count = true,
-        },
-        icons = {
-            breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-            separator = "➜", -- symbol used between a key and it's label
-            group = "+", -- symbol prepended to a group
-        },
-        popup_mappings = {
-            scroll_down = "<c-d>", -- binding to scroll down inside the popup
-            scroll_up = "<c-u>", -- binding to scroll up inside the popup
-        },
-        window = {
-            border = "rounded", -- none, single, double, shadow
-            position = "bottom", -- bottom, top
-            margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-            padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
-            winblend = 0, -- value between 0-100 0 for fully opaque and 100 for fully transparent
-        },
+        -- Layout configuration
         layout = {
-            height = { min = 4, max = 25 }, -- min and max height of the columns
-            width = { min = 20, max = 50 }, -- min and max width of the columns
-            spacing = 3, -- spacing between columns
-            align = "left", -- align columns left, center or right
+            width = { min = 20 },
+            spacing = 3,
         },
-        ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
-        hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "^:", "^ ", "^call ", "^lua " }, -- hide mapping boilerplate
-        show_help = true, -- show a help message in the command line for using WhichKey
-        show_keys = true, -- show the currently pressed key and its label as a message in the command line
-        triggers = "auto", -- automatically setup triggers
-        -- triggers = {"<leader>"} -- or specify a list manually
-        -- list of triggers, where WhichKey should not wait for timeoutlen and show immediately
-        triggers_nowait = {
-            -- marks
-            "`",
-            "'",
-            "g`",
-            "g'",
-            -- registers
-            '"',
-            "<c-r>",
-            -- spelling
-            "z=",
+        -- Keys for navigation within the popup
+        keys = {
+            scroll_down = "<c-d>",
+            scroll_up = "<c-u>",
         },
-        triggers_blacklist = {
-            -- list of mode / prefixes that should never be hooked by WhichKey
-            -- this is mostly relevant for keymaps that start with a native binding
-            i = { "j", "k" },
-            v = { "j", "k" },
+        -- Sorting of mappings
+        sort = { "local", "order", "group", "alphanum", "mod" },
+        -- Icon configuration
+        icons = {
+            breadcrumb = "»",
+            separator = "➜",
+            group = "+",
+            ellipsis = "…",
+            mappings = true, -- use icons from rules and spec
+            colors = true, -- use mini.icons colors
+            keys = {
+                Up = " ",
+                Down = " ",
+                Left = " ",
+                Right = " ",
+                C = " ",
+                M = " ",
+                S = " ",
+                CR = " ",
+                Space = " ",
+                Tab = " ",
+            },
         },
-        -- disable the WhichKey popup for certain buf types and file types.
-        -- Disabled by default for Telescope
-        disable = {
-            buftypes = {},
-            filetypes = {},
+        show_help = true,
+        show_keys = true,
+    },
+    keys = {
+        {
+            "<leader>?",
+            function()
+                require("which-key").show({ global = false })
+            end,
+            desc = "Buffer Local Keymaps (which-key)",
         },
     },
-    config = function(_, opts)
-        local wk = require("which-key")
-        wk.setup(opts)
-        
-        -- Register key groups and descriptions for better organization
-        wk.register({
-            -- Project/Files
-            ["<leader>p"] = { name = "+project/find" },
-            ["<leader>pf"] = { "Find files" },
-            ["<leader>ps"] = { "Live grep" },
-            ["<leader>pb"] = { "Find buffers" },
-            ["<leader>pp"] = { "Telescope" },
-            ["<leader>pv"] = { "File explorer (netrw)" },
-            
-            -- LSP
-            ["<leader>g"] = { name = "+goto" },
-            ["<leader>gd"] = { "Go to definition (same buffer)" },
-            ["<leader>gD"] = { "Go to declaration (same buffer)" },
-            ["<leader>gi"] = { "Go to implementation (new tab)" },
-            ["<leader>gt"] = { "Go to type definition (new tab)" },
-            ["<leader>gr"] = { "Find references" },
-            
-            ["<leader>l"] = { name = "+lsp" },
-            ["<leader>lr"] = { "References (telescope)" },
-            ["<leader>ls"] = { "Document symbols" },
-            ["<leader>lS"] = { "Workspace symbols" },
-            ["<leader>ld"] = { "Diagnostics" },
-            
-            ["<leader>r"] = { name = "+refactor" },
-            ["<leader>rn"] = { "Rename symbol" },
-            
-            ["<leader>c"] = { name = "+code" },
-            ["<leader>ca"] = { "Code actions" },
-            ["<leader>cc"] = { "Copy line to clipboard" },
-            
-            ["<leader>d"] = { name = "+diagnostics/debug" },
-            ["<leader>de"] = { "Show diagnostic popup" },
-            ["<leader>db"] = { "Debug: Toggle breakpoint" },
-            ["<leader>dl"] = { "Debug: Step into" },
-            ["<leader>dj"] = { "Debug: Step over" },
-            ["<leader>dk"] = { "Debug: Step out" },
-            ["<leader>dc"] = { "Debug: Continue" },
-            ["<leader>dd"] = { "Debug: Conditional breakpoint" },
-            ["<leader>dx"] = { "Debug: Terminate" },
-            ["<leader>dr"] = { "Debug: Run last" },
-            ["<leader>dt"] = { "Debug: Run testables" },
-            
-            -- Harpoon
-            ["<leader>a"] = { "Harpoon: Add file" },
-            ["<leader>e"] = { "Harpoon: Toggle menu" },
-            ["<leader>1"] = { "Harpoon: Select 1" },
-            ["<leader>2"] = { "Harpoon: Select 2" },
-            ["<leader>3"] = { "Harpoon: Select 3" },
-            ["<leader>4"] = { "Harpoon: Select 4" },
-            
-            -- Workspace
-            ["<leader>w"] = { name = "+workspace" },
-            ["<leader>wa"] = { "Add workspace folder" },
-            ["<leader>wr"] = { "Remove workspace folder" },
-            ["<leader>wl"] = { "List workspace folders" },
-            
-            -- Quickfix/Location
-            ["<leader>q"] = { "Open diagnostics in location list" },
-            ["<leader>k"] = { "Next location list" },
-            ["<leader>j"] = { "Previous location list" },
-            
-            -- Utilities
-            ["<leader>u"] = { "Toggle undotree" },
-            ["<leader>x"] = { "Make file executable" },
-            ["<leader>f"] = { "Format buffer" },
-            ["<leader>sh"] = { "Signature help" },
-        })
-        
-        -- Register some additional helpful groups
-        wk.register({
-            -- Motions and objects that are useful to remember
-            ["g"] = { name = "+goto" },
-            ["z"] = { name = "+folds/spelling" },
-            ["]"] = { name = "+next" },
-            ["["] = { name = "+prev" },
-            
-            -- Telescope (Ctrl+P)
-            ["<C-p>"] = { "Git files" },
-            
-            -- Quickfix navigation
-            ["<C-k>"] = { "Next quickfix item" },
-            ["<C-j>"] = { "Previous quickfix item" },
-            
-            -- Other important keys
-            ["<F2>"] = { "Rename symbol" },
-            ["K"] = { "Hover documentation" },
-            ["gd"] = { "Go to definition (new tab)" },
-            ["gD"] = { "Go to declaration" },
-            
-            -- Diagnostics
-            ["]d"] = { "Next diagnostic" },
-            ["[d"] = { "Previous diagnostic" },
-        })
-        
-        -- Register visual mode mappings
-        wk.register({
-            ["<leader>c"] = { name = "+code" },
-            ["<leader>ca"] = { "Code actions" },
-            ["<leader>c"] = { "Copy to clipboard" },
-            ["J"] = { "Move line down" },
-            ["K"] = { "Move line up" },
-            ["<"] = { "Indent left" },
-            [">"] = { "Indent right" },
-        }, { mode = "v" })
-    end,
 }
