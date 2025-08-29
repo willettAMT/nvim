@@ -48,6 +48,7 @@ return {
         },
         lazy = false,
         config = function()
+            vim.lsp.set_log_level('ERROR')
             local capabilities = require('blink.cmp').get_lsp_capabilities()
             local lspconfig = require("lspconfig")
 
