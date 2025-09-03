@@ -10,7 +10,7 @@ return {
                     "vim",
                     "vimdoc",
                     "c",
-                    "query",
+                    -- "query",
                     "cpp",
                     -- "markdown",
                     -- "json",
@@ -28,6 +28,9 @@ return {
                     "rust",
                     -- "sql",
                 },
+                -- Fix Lua diagnostics: add missing fields
+                modules = {},
+                ignore_install = {},
                 sync_install = false,
                 auto_install = true,
                 highlight = {
@@ -37,6 +40,6 @@ return {
 
             })
         end,
-        },
     }
+}
 
