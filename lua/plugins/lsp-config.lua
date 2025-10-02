@@ -14,7 +14,8 @@ return {
                 "pyright",
                 "ts_ls",
                 "rust_analyzer",
-                "clangd"
+                "clangd",
+                "hls"
             },
         },
     },
@@ -219,6 +220,32 @@ return {
                     },
                 },
             })
+            vim.lsp.config("hls", {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                settings = {
+                    haskell = {
+                        formattingProvider = "ormolu",  -- or "fourmolu", "stylish-haskell"
+                        plugin = {
+                            hlint = {
+                                globalOn = true,
+                                diagnosticsOn = true,
+                                codeActionsOn = true,
+                            },
+                            eval = {
+                                globalOn = true,
+                            },
+                            importLens = {
+                                globalOn = true,
+                            },
+                            retrie = {
+                                globalOn = true,
+                            },
+                        },
+                    },
+                },
+                filetypes = { 'haskell', 'lhaskell', 'cabal' },
+            })
 
             vim.lsp.config("pyright", {
                 capabilities = capabilities,
@@ -339,7 +366,8 @@ return {
                 "ts_ls",
                 "rust_analyzer",
                 "gopls",
-                "clangd"
+                "clangd",
+                "hls"
             })
 
             -- Configure diagnostics appearance (modern method for 0.11.3+)
