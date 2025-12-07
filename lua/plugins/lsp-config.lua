@@ -16,8 +16,21 @@ return {
                 "rust_analyzer",
                 "clangd",
                 "hls"
+                -- NOTE: Do NOT add zls here - mason only has tagged releases
+                -- which are incompatible with Zig nightly/master
             },
         },
+    },
+    -- Zig syntax highlighting and basic support
+    {
+        "ziglang/zig.vim",
+        ft = { "zig", "zon" },
+        config = function()
+            -- Don't show parse errors in a separate window
+            vim.g.zig_fmt_parse_errors = 0
+            -- Disable format-on-save from zig.vim (let ZLS handle it)
+            vim.g.zig_fmt_autosave = 0
+        end,
     },
     {
         "neovim/nvim-lspconfig",
@@ -184,49 +197,44 @@ return {
                 if telescope_available then
                     vim.keymap.set('n', '<leader>lr', telescope_builtin.lsp_references, opts)        -- References in telescope
                     vim.keymap.set('n', '<leader>ls', telescope_builtin.lsp_document_symbols, opts)  -- Document symbols
-                    vim.keymap.set('n', '<leader>lS', telescope_builtin.lsp_workspace_symbols, opts) -- Workspace symbols
-                    vim.keymap.set('n', '<leader>ld', telescope_builtin.diagnostics, opts)           -- All diagnostics
-                end
-
-                -- Highlight symbol under cursor (non-conflicting)
-                if client.server_capabilities.documentHighlightProvider then
-                    local group = vim.api.nvim_create_augroup("LSPDocumentHighlight", { clear = true })
-                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                        group = group,
-                        buffer = bufnr,
-                        callback = vim.lsp.buf.document_highlight,
-                    })
-                    vim.api.nvim_create_autocmd("CursorMoved", {
-                        group = group,
-                        buffer = bufnr,
-                        callback = vim.lsp.buf.clear_references,
-                    })
+                    vim.keymap.set('n', '<leader>lw', telescope_builtin.lsp_workspace_symbols, opts) -- Workspace symbols
+                    vim.keymap.set('n', '<leader>ld', telescope_builtin.diagnostics, opts)           -- Diagnostics
                 end
             end
 
-            -- Configure all servers using the new vim.lsp.config API
+            -- Configure lua_ls (Lua Language Server)
             vim.lsp.config("lua_ls", {
                 capabilities = capabilities,
                 on_attach = on_attach,
                 settings = {
                     Lua = {
-                        runtime = { version = 'LuaJIT' },
-                        diagnostics = { globals = { 'vim' } },
+                        runtime = {
+                            version = 'LuaJIT',
+                        },
+                        diagnostics = {
+                            globals = { 'vim' },
+                        },
                         workspace = {
                             library = vim.api.nvim_get_runtime_file("", true),
                             checkThirdParty = false,
                         },
-                        telemetry = { enable = false },
+                        telemetry = {
+                            enable = false,
+                        },
                     },
                 },
             })
+
             vim.lsp.config("hls", {
                 capabilities = capabilities,
                 on_attach = on_attach,
                 settings = {
                     haskell = {
-                        formattingProvider = "ormolu",  -- or "fourmolu", "stylish-haskell"
+                        formattingProvider = "fourmolu",
                         plugin = {
+                            stan = {
+                                globalOn = true,
+                            },
                             hlint = {
                                 globalOn = true,
                                 diagnosticsOn = true,
@@ -359,6 +367,40 @@ return {
                 },
             })
 
+            -- Configure ZLS (Zig Language Server)
+            vim.lsp.config("zls", {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                -- If zls is in your PATH, you can omit the cmd line
+                -- Otherwise, specify the full path to the zls executable
+                cmd = { vim.fn.expand("~/Documents/LSP/zls/zig-out/bin/zls") },
+                settings = {
+                    zls = {
+                        -- Whether to enable build-on-save diagnostics
+                        -- enable_build_on_save = true,
+                        -- Neovim already provides basic syntax highlighting via zig.vim
+                        semantic_tokens = "partial",
+                        -- If zig is in your PATH, you can omit this line
+                        -- Since you symlinked it to /opt/homebrew/bin/zig, it should be found automatically
+                        zig_exe_path = "/opt/homebrew/bin/zig",
+                    }
+                },
+                root_markers = {
+                    'zls.json',
+                    '.git',
+                    'build.zig',
+                },
+            })
+
+            -- Format-on-save for Zig files
+            -- Formatting with ZLS matches `zig fmt`
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                pattern = { "*.zig", "*.zon" },
+                callback = function()
+                    vim.lsp.buf.format({ async = false })
+                end
+            })
+
             -- Enable all configured servers
             vim.lsp.enable({
                 "lua_ls",
@@ -367,7 +409,8 @@ return {
                 "rust_analyzer",
                 "gopls",
                 "clangd",
-                "hls"
+                "hls",
+                "zls"  -- Added ZLS
             })
 
             -- Configure diagnostics appearance (modern method for 0.11.3+)
