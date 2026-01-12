@@ -4,10 +4,6 @@ local keymap = vim.keymap.set
 -- Directory Navigation
 keymap("n", "<leader>pv", vim.cmd.Ex)
 
--- Move CMD ( highlight and move)
-keymap("v", "J", ":m '>+1<CR>gv=gv")
-keymap("v", "K", ":m '>-2<CR>gv=gv")
-
 -- Keep cursor in middle of page while half-page jumping
 keymap("n", "<C-d>", "<C-d>zz")
 keymap("n", "<C-u>", "<C-u>zz")
@@ -28,7 +24,7 @@ keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
 
 -- switch projects BLAZINGLY FAST
-keymap("n", "<C-f>", "<cmd>silent !tmux neww tumux-sesssionizer<CR>")
+keymap("n", "<C-f>", "<cmd>silent !tmux new tumux-sessionizer<CR>")
 keymap("n", "<leader>f", function()
     vim.lsp.buf.format()
 end)
@@ -37,11 +33,16 @@ end)
 keymap("v", "<", "<gv")
 keymap("v", ">", ">gv")
 
+-- tmux-nvim-navigator
+keymap('n', '<C-k>', ':wincmd k<CR>')
+keymap('n', '<C-j>', ':wincmd j<CR>')
+keymap('n', '<C-h>', ':wincmd h<CR>')
+keymap('n', '<C-l>', ':wincmd l<CR>')
 -- Quickfix navigation
-keymap("n", "<C-k>", "<cmd>cnext<CR>zz")
-keymap("n", "<C-j>", "<cmd>cprev<CR>zz")
-keymap("n", "<leader>k", "<cmd>lnext<CR>zz")
-keymap("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- keymap("n", "<C-k>", "<cmd>cnext<CR>zz")
+-- keymap("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- keymap("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- keymap("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Will create bash executable
 keymap("n", "<leader>mx", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make file executable" })
