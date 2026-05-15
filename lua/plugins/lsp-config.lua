@@ -15,7 +15,6 @@ return {
                 "ts_ls",
                 "rust_analyzer",
                 "clangd",
-                "hls"
                 -- NOTE: Do NOT add zls here - mason only has tagged releases
                 -- which are incompatible with Zig nightly/master
             },
