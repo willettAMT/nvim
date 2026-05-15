@@ -65,7 +65,7 @@ return {
             local capabilities = require('blink.cmp').get_lsp_capabilities()
 
             -- Vim-friendly on_attach function
-            local function on_attach(client, bufnr)
+            local function on_attach(_, bufnr)
                 local opts = { buffer = bufnr, silent = true }
 
                 -- Custom function to open definition in new tab (FIXED - Auto-detect encoding)
